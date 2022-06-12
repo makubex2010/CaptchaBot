@@ -218,7 +218,7 @@ async def cb_handler(bot, query):
             markup = MakeCaptchaMarkup(query.message["reply_markup"]["inline_keyboard"], _number, "✅")
             await query.message.edit_reply_markup(reply_markup=InlineKeyboardMarkup(markup))
             if not LocalDB[query.from_user.id]["answer"]:
-                await query.answer("你通過了🥳驗證碼！", show_alert=True)
+                await query.answer("你通過了🥳驗證！", show_alert=True)
                 del LocalDB[query.from_user.id]
                 await bot.unban_chat_member(chat_id=query.message.chat.id, user_id=query.from_user.id)
                 await query.message.delete(True)
