@@ -10,6 +10,7 @@
         "bot"
     ],
     "repository": "https://github.com/makubex2010/CaptchaBot",
+    "logo": "https://i.imgur.com/RYqwBHA.jpg",
     "success_url": "https://t.me/PlayStationTw",
     "env": {
         "APP_ID": {
