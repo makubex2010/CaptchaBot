@@ -1,6 +1,6 @@
 {
-    "name": "A Telegram Captcha Bot by @itzmecrazy.",
-    "description": "A Telegram Bot for verifying new group members by Emojis or Number Captcha. Made by @itzmecrazy.",
+    "name": "電報驗證碼機器人 by @Kevin_RX",
+    "description": "一個 Telegram Bot，用於通過 Emojis 或 Number Captcha 驗證新的群組成員。",
     "keywords": [
         "telegram",
         "emoji",
@@ -9,27 +9,27 @@
         "digit",
         "bot"
     ],
-    "repository": "https://github.com/godofanjal/CaptchaBot",
-    "success_url": "https://t.me/Pegasus_Network",
+    "repository": "https://github.com/makubex2010/CaptchaBot",
+    "success_url": "https://t.me/PlayStationTw",
     "env": {
         "APP_ID": {
-            "description": "Get this value from my.telegram.org"
+            "description": "從中獲取此值 my.telegram.org"
         },
         "API_HASH": {
-            "description": "Get this value from my.telegram.org"
+            "description": "從中獲取此值 from my.telegram.org"
         },
         "BOT_TOKEN": {
-            "description": "Get this from @BotFather"
+            "description": "得到這個 @BotFather"
         },
         "MONGODB_URI": {
-            "description": "MongoDB URI for Saving Chat Settings"
+            "description": "MongoDB URI 用於保存聊天設置"
         },
         "SUDO_USERS": {
-            "description": "Your Telegram User ID for using Admin commands. goto @JVToolsBot and send /id to get your id",
+            "description": "您用於使用管理命令的電報用戶 ID。 轉到 @JVToolsBot 並發送 /id 以獲取您的 id",
             "required": false
         },
         "SESSION_NAME": {
-            "description": "No need",
+            "description": "沒必要",
             "required": false
         }
     },
