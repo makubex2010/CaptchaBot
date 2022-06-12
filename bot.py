@@ -114,7 +114,7 @@ async def cb_handler(bot, query):
             await query.answer("此消息不適合您！", show_alert=True)
             return
         if captcha == "N":
-            type_ = "Number"
+            type_ = "數字"
         elif captcha == "E":
             type_ = "Emoji"
         chk = manage_db().add_chat(int(chat_id), captcha)
@@ -206,7 +206,7 @@ async def cb_handler(bot, query):
                 await query.message.edit_caption(f"{query.from_user.mention}, 您沒有通過驗證碼！\n\n"
                                                f"您可以在 5 分鐘後重試。",
                                                reply_markup=None)
-                await asyncio.sleep(600)
+                await asyncio.sleep(300)
                 del LocalDB[query.from_user.id]
                 return
             markup = MakeCaptchaMarkup(query.message["reply_markup"]["inline_keyboard"], _number, "❌")
