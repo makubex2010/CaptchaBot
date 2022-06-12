@@ -50,15 +50,15 @@ async def check_chat_captcha(client, message):
             try:
                 await client.send_message(
                     chat_id=chat_id,
-                    text=f"{message.from_user.mention} 未經驗證再次加入群！\n\n"
-                         f"他可以在 10 分鐘後重試。",
+                    text=f"{message.from_user.mention} 未通過驗證再次加入群！\n\n"
+                         f"他可以在 5 分鐘後重試。",
                     disable_web_page_preview=True
                 )
                 await client.delete_messages(chat_id=chat_id,
                                              message_ids=LocalDB[user_id]["msg_id"])
             except:
                 pass
-            await asyncio.sleep(600)
+            await asyncio.sleep(300)
             del LocalDB[user_id]
     except:
         pass
@@ -67,7 +67,7 @@ async def check_chat_captcha(client, message):
     except:
         return
     await client.send_message(chat_id,
-                              text=f"{message.from_user.mention} 在這裡驗證，請確認您是人,不是畜生!",
+                              text=f"{message.from_user.mention} 在這裡驗證，請確認你是人不是機器人!",
                               reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="立即驗證", callback_data=f"verify_{chat_id}_{user_id}")]]))
         
 @app.on_message(filters.command(["captcha"]) & ~filters.private)
@@ -86,7 +86,7 @@ async def add_chat(bot, message):
         
 @app.on_message(filters.command(["help"]))
 async def start_chat(bot, message):
-    await message.reply_text(text="/captcha - 打開驗證碼：有兩種類型的驗證碼\n/remove - 關閉驗證碼\n\n在我的支持小組中尋求更多幫助",
+    await message.reply_text(text="/captcha - 打開驗證碼：有兩種類型的驗證碼\n/remove - 關閉驗證碼",
                              reply_markup=ch_markup)
     
 @app.on_message(filters.command(["start"]))
@@ -154,7 +154,7 @@ async def cb_handler(bot, query):
                     markup[2].append(InlineKeyboardButton(f"{list_[count]}", callback_data=f"jv_{chat_id}_{user_id}_{list_[count]}"))
                     count += 1
             elif c == "E":
-                print("proccesing img captcha")
+                print("處理號碼驗證碼")
                 await query.answer("為您創建驗證碼")
                 data_ = emoji_()
                 _numbers = data_["answer"]
@@ -178,7 +178,7 @@ async def cb_handler(bot, query):
                 typ_ = "emoji"
             msg = await bot.send_photo(chat_id=chat_id,
                             photo=data_["captcha"],
-                            caption=f"{query.from_user.mention} 請點擊每個 {typ_} 圖像中顯示的按鈕, {tot} 錯誤是允許的。",
+                            caption=f"{query.from_user.mention} 請點擊每個 {typ_} 圖像中顯示的按鈕, 只能錯 {tot} 次。",
                             reply_markup=InlineKeyboardMarkup(markup))
             LocalDB[query.from_user.id]['msg_id'] = msg.message_id
             await query.message.delete()
@@ -204,14 +204,14 @@ async def cb_handler(bot, query):
             n = tot - LocalDB[query.from_user.id]['mistakes']
             if n == 0:
                 await query.message.edit_caption(f"{query.from_user.mention}, 您沒有通過驗證碼！\n\n"
-                                               f"您可以在 10 分鐘後重試。",
+                                               f"您可以在 5 分鐘後重試。",
                                                reply_markup=None)
                 await asyncio.sleep(600)
                 del LocalDB[query.from_user.id]
                 return
             markup = MakeCaptchaMarkup(query.message["reply_markup"]["inline_keyboard"], _number, "❌")
             await query.message.edit_caption(f"{query.from_user.mention}, 選擇所有 {typ_}你在圖片中看到的。 "
-                                           f"你只被允許 {n} 錯誤。",
+                                           f"你只能 {n} 次錯誤。",
                                            reply_markup=InlineKeyboardMarkup(markup))
         else:
             LocalDB[query.from_user.id]["answer"].remove(_number)
