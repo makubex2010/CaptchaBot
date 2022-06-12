@@ -1,6 +1,6 @@
 {
     "name": "電報驗證碼機器人 by @Kevin_RX",
-    "description": "一個 Telegram Bot，用於通過 Emojis 或 Number Captcha 驗證新的群組成員。",
+    "description": "一個 Telegram Bot用於通過 Emojis 或 數字 驗證新的群組成員。",
     "keywords": [
         "telegram",
         "emoji",
