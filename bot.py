@@ -78,7 +78,7 @@ async def add_chat(bot, message):
     if user.status == "creator" or user.status == "administrator" or user.user.id in Config.SUDO_USERS:
         chat = manage_db().chat_in_db(chat_id)
         if chat:
-            await message.reply_text("Captcha already tunned on here, use /remove to turn off")
+            await message.reply_text("驗證碼已在此處啟用，使用 /remove 關閉")
         else:
             await message.reply_text(text=f"請選擇驗證碼類型",
                                     reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="數字", callback_data=f"new_{chat_id}_{user_id}_N"),
@@ -119,7 +119,7 @@ async def cb_handler(bot, query):
             type_ = "Emoji"
         chk = manage_db().add_chat(int(chat_id), captcha)
         if chk == 404:
-            await query.message.edit(Captcha 已在此處啟用，請使用 /remove 關掉")
+            await query.message.edit("Captcha 已在此處啟用，請使用 /remove 關掉")
             return
         else:
             await query.message.edit(f"{type_} 驗證碼已打開。")
@@ -203,8 +203,8 @@ async def cb_handler(bot, query):
             await query.answer(f"You pressed wrong {typ_}!", show_alert=True)
             n = tot - LocalDB[query.from_user.id]['mistakes']
             if n == 0:
-                await query.message.edit_caption(f"{query.from_user.mention}, you failed to solve the captcha!\n\n"
-                                               f"You can try again after 10 minutes.",
+                await query.message.edit_caption(f"{query.from_user.mention}, 您沒有通過驗證碼！\n\n"
+                                               f"您可以在 10 分鐘後重試。",
                                                reply_markup=None)
                 await asyncio.sleep(600)
                 del LocalDB[query.from_user.id]
