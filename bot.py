@@ -116,7 +116,7 @@ async def cb_handler(bot, query):
         if captcha == "N":
             type_ = "數字"
         elif captcha == "E":
-            type_ = "Emoji"
+            type_ = "表情符號"
         chk = manage_db().add_chat(int(chat_id), captcha)
         if chk == 404:
             await query.message.edit("Captcha 已在此處啟用，請使用 /remove 關掉")
