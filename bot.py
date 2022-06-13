@@ -67,7 +67,7 @@ async def check_chat_captcha(client, message):
     except:
         return
     await client.send_message(chat_id,
-                              text=f"{message.from_user.mention} 在這裡驗證，請確認你是人不是機器人!",
+                              text=f"{message.from_user.mention} 需要你驗證，請確認你是真人，不是機器人!",
                               reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="立即驗證", callback_data=f"verify_{chat_id}_{user_id}")]]))
         
 @app.on_message(filters.command(["captcha"]) & ~filters.private)
@@ -82,7 +82,7 @@ async def add_chat(bot, message):
         else:
             await message.reply_text(text=f"請選擇驗證碼類型",
                                     reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="數字", callback_data=f"new_{chat_id}_{user_id}_N"),
-                                                                        InlineKeyboardButton(text="Emoji", callback_data=f"new_{chat_id}_{user_id}_E")]]))
+                                                                        InlineKeyboardButton(text="表情符號", callback_data=f"new_{chat_id}_{user_id}_E")]]))
         
 @app.on_message(filters.command(["help"]))
 async def start_chat(bot, message):
@@ -173,12 +173,12 @@ async def cb_handler(bot, query):
                 LocalDB[int(user_id)] = {"answer": _numbers, "list": list_, "mistakes": 0, "captcha": "E", "total":tot, "msg_id": None}
             c = LocalDB[query.from_user.id]['captcha']
             if c == "N":
-                typ_ = "number"
+                typ_ = "數字"
             if c == "E":
-                typ_ = "emoji"
+                typ_ = "表情符號"
             msg = await bot.send_photo(chat_id=chat_id,
                             photo=data_["captcha"],
-                            caption=f"{query.from_user.mention} 請點擊每個 {typ_} 圖像中顯示的按鈕, 只能錯 {tot} 次。",
+                            caption=f"{query.from_user.mention} 選擇所有您在圖片中看到的 {typ_} , 你只能錯 {tot} 次。",
                             reply_markup=InlineKeyboardMarkup(markup))
             LocalDB[query.from_user.id]['msg_id'] = msg.message_id
             await query.message.delete()
@@ -195,9 +195,9 @@ async def cb_handler(bot, query):
         c = LocalDB[query.from_user.id]['captcha']
         tot = LocalDB[query.from_user.id]["total"]
         if c == "N":
-            typ_ = "number"
+            typ_ = "數字"
         if c == "E":
-            typ_ = "emoji"
+            typ_ = "表情符號"
         if _number not in LocalDB[query.from_user.id]["answer"]:
             LocalDB[query.from_user.id]["mistakes"] += 1
             await query.answer(f"You pressed wrong {typ_}!", show_alert=True)
@@ -210,8 +210,8 @@ async def cb_handler(bot, query):
                 del LocalDB[query.from_user.id]
                 return
             markup = MakeCaptchaMarkup(query.message["reply_markup"]["inline_keyboard"], _number, "❌")
-            await query.message.edit_caption(f"{query.from_user.mention}, 選擇所有 {typ_}你在圖片中看到的。 "
-                                           f"你只能 {n} 次錯誤。",
+            await query.message.edit_caption(f"{query.from_user.mention}, 選擇所有您在圖片中看到的 {typ_} 。 "
+                                           f"您只能 {n} 次錯誤。",
                                            reply_markup=InlineKeyboardMarkup(markup))
         else:
             LocalDB[query.from_user.id]["answer"].remove(_number)
