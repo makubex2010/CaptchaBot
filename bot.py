@@ -67,7 +67,7 @@ async def check_chat_captcha(client, message):
     except:
         return
     await client.send_message(chat_id,
-                              text=f"{message.from_user.mention} 需要你驗證，請確認你是真人，不是機器人!",
+                              text=f"{message.from_user.mention} 請確認你是真人，不是機器人!",
                               reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="立即驗證", callback_data=f"verify_{chat_id}_{user_id}")]]))
         
 @app.on_message(filters.command(["captcha"]) & ~filters.private)
